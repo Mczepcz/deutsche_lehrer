@@ -1,1 +1,14 @@
-{# empty Twig template #}
+{% extends "::base.html.twig" %}
+{% block body %}
+    <a href="{{path('fos_user_security_logout')}}">Log out</a>
+    <p>Hi {{name}}</p>
+    <a href="{{path('deck_new')}}">New deck</a>
+    <table class="table table-striped">
+        <tr>
+            <th>Deck</th>
+            <th>Due</th>
+            <th>New</th>
+        </tr>
+        
+    </table>
+{% endblock %}
