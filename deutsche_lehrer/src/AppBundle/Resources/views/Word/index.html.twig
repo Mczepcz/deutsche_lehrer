@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Word list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Pl</th>
+                <th>De</th>
+                <th>Partofspeech</th>
+                <th>Gender</th>
+                <th>Grammnumber</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('word_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.pL }}</td>
+                <td>{{ entity.dE }}</td>
+                <td>{{ entity.partOfSpeech }}</td>
+                <td>{{ entity.gender }}</td>
+                <td>{{ entity.grammNumber }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('word_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('word_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('word_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}
