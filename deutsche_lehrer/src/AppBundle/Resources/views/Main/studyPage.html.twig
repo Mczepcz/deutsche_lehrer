@@ -1,0 +1,13 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+    <div class="col-md-6 col-md-offset-3">
+        
+        <a href="{{path('learnDeck',{"deck":deck.name})}}">Back</a>
+        <br/>
+        <p>Hmmmmmmmmmm</p>
+        <p>{{words[0].pL}}</p>
+        <p>{{words[0].dE}}</p>
+
+        <a href="#">Bad</a> <a href="#">Hard</a> <a href="#">Good</a> <a href="#">Easy</a>
+    </div>
+{% endblock %}

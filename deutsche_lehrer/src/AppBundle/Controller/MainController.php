@@ -23,7 +23,28 @@ class MainController extends Controller
      */
     public function showMainPageAction(){
         $loggedUser = $this->getUser();
-        return array("name"=>$loggedUser->getUsername());
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT d from AppBundle:Deck d WHERE d.user = :user')->setParameter('user',$loggedUser);
+        $decks = $query->getResult();
+        return array("name"=>$loggedUser->getUsername(), "decks"=>$decks);
         
+    }
+    /**
+     * @Route("/learn/{deck}", name="learnDeck")
+     * @Template("AppBundle:Main:deckPage.html.twig")
+     */
+    public function showDeckAction($deck){
+        $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deck);
+        return array("deck"=>$currentDeck);
+    }
+    /**
+     * @Route("/study/{deck}", name="study")
+     * @Template("AppBundle:Main:studyPage.html.twig")
+     * @param type $deck
+     */
+    public function learnAction($deck){
+        $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deck);
+        $words = $currentDeck->getWords();
+        return array("words"=>$words);
     }
 }

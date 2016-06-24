@@ -133,4 +133,7 @@ class Deck
     {
         return $this->words;
     }
+    public function __toString(){
+        return $this->name;
+    }
 }
