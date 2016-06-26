@@ -38,13 +38,14 @@ class MainController extends Controller
         return array("deck"=>$currentDeck);
     }
     /**
-     * @Route("/study/{deck}", name="study")
+     * @Route("/study/{deck}/{n}", name="study", defaults={"n" = 0})
      * @Template("AppBundle:Main:studyPage.html.twig")
      * @param type $deck
      */
-    public function learnAction($deck){
+    public function learnAction($deck, $n){
         $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deck);
         $words = $currentDeck->getWords();
-        return array("words"=>$words);
+        $wordsNum = count($words);
+        return array("words"=>$words, "deck"=>$currentDeck, "n"=>$n, "wordsNum"=>$wordsNum);
     }
 }

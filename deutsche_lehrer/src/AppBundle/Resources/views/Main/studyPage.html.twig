@@ -4,9 +4,12 @@
         
         <a href="{{path('learnDeck',{"deck":deck.name})}}">Back</a>
         <br/>
-        <p>Hmmmmmmmmmm</p>
-        <p>{{words[0].pL}}</p>
-        <p>{{words[0].dE}}</p>
+        <p>{{wordsNum}}</p>
+        <p>{{words[n].pL}}</p>
+        <p>{{words[n].dE}}</p>
+        {% if n < wordsNum-1 %}
+            <a href="{{path('study',{"deck":deck.name, "n":n+1})}}">Next</a>
+        {% endif %}
 
         <a href="#">Bad</a> <a href="#">Hard</a> <a href="#">Good</a> <a href="#">Easy</a>
     </div>
