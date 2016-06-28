@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Word;
 use AppBundle\Form\WordType;
+use AppBundle\Entity\Repeater;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Word controller.
@@ -45,6 +47,7 @@ class WordController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Word();
+        
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -52,6 +55,19 @@ class WordController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+            
+            $repeater = new Repeater();
+            $loggedUser = $this->getUser();
+            $date =  new \DateTime();
+            $repeater->setRepeatDate($date);
+            $repeater->setRepeatCode(0);
+            $repeater->setUser($loggedUser);
+            $repeater->setWord($entity);
+            
+            $em->persist($repeater);
+            $em->flush();
+            
+
 
             return $this->redirect($this->generateUrl('word_show', array('id' => $entity->getId())));
         }

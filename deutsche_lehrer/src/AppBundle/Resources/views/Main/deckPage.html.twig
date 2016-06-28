@@ -4,8 +4,8 @@
     <a href="{{path('mainPage')}}">Back</a>
     <br/>
     <div class="col-md-4 col-md-offset-4">
-        <p>New words: 0</p>
-        <p>Words to repeat: 10</p>
+        <p>New words: {{newNum}}</p>
+        <p>Words to repeat: {{toRepeatNum}}</p>
         <a href="{{path('study',{"deck":deck.name})}}">Start learning</a>
     <div>
 {% endblock %}

@@ -35,7 +35,13 @@ class MainController extends Controller
      */
     public function showDeckAction($deck){
         $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deck);
-        return array("deck"=>$currentDeck);
+        //$currentRepeater = $this->getDoctrine()->getRepository('AppBundle:Repeater')->findByUser($loggedUser);
+        $loggedUser = $this->getUser();
+        $newWords =  $this->getDoctrine()->getRepository('AppBundle:Repeater')->findNewWords($loggedUser, $currentDeck);
+        $toRepeatWords = $this->getDoctrine()->getRepository('AppBundle:Repeater')->findtoRepeatWords($loggedUser, $currentDeck);
+        $toRepeatWordNum = count($toRepeatWords);
+        $newWordsNum = count($newWords);
+        return array("deck"=>$currentDeck, "newNum"=>$newWordsNum, "toRepeatNum"=>$toRepeatWordNum);
     }
     /**
      * @Route("/study/{deck}/{n}", name="study", defaults={"n" = 0})
@@ -44,8 +50,11 @@ class MainController extends Controller
      */
     public function learnAction($deck, $n){
         $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deck);
-        $words = $currentDeck->getWords();
-        $wordsNum = count($words);
+        $loggedUser = $this->getUser();
+        
+        $currentRepeater = $this->getDoctrine()->getRepository('AppBundle:Repeater')->findByUser($loggedUser);
+        $wordsNum = count(currentRepeater);
+        
         return array("words"=>$words, "deck"=>$currentDeck, "n"=>$n, "wordsNum"=>$wordsNum);
     }
 }

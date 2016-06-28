@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class RepeaterRepository extends EntityRepository
 {
+    public function findNewWords($user, $deck){
+        $dql='SELECT r,w FROM AppBundle:Repeater r JOIN r.word w WHERE r.user = :user AND r.repeatCode = 0 AND w.deck = :deck ';
+        $query=$this->getEntityManager()->createQuery($dql);
+        $query->setParameter("user",$user);
+         $query->setParameter("deck",$deck);
+        return $query->getResult();
+    }
+    public function findtoRepeatWords($user, $deck){
+        $dql='SELECT r,w FROM AppBundle:Repeater r JOIN r.word w WHERE r.user = :user AND r.repeatCode <> 0 AND w.deck = :deck ';
+        $query=$this->getEntityManager()->createQuery($dql);
+        $query->setParameter("user",$user);
+         $query->setParameter("deck",$deck);
+        return $query->getResult();
+    }
 }
