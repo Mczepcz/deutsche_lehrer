@@ -45,15 +45,18 @@ class DeckController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Deck();
+        $loggedUser = $this->getUser();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $entity->setUser($loggedUser);
+            $loggedUser->addDeck($entity);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('deck_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('mainPage'));
         }
 
         return array(
@@ -75,7 +78,6 @@ class DeckController extends Controller
             'action' => $this->generateUrl('deck_create'),
             'method' => 'POST',
         ));
-
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;

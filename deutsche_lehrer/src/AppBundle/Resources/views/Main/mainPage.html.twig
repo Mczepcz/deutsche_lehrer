@@ -10,9 +10,11 @@
             <th>New</th>
         </tr>
         {% for deck in decks %}
-            <td><a href="{{path('learnDeck',{"deck":deck.name})}}">{{deck.name}}</td>
-            <td>7</td>
-            <td>10</td>
+            <tr>
+                <td><a href="{{path('learnDeck',{"deck":deck[0].name})}}">{{deck[0].name}}</td>
+                <td>{{deck[2]}}</td>
+                <td>{{deck[1]}}</td>
+            </tr>
         {% endfor %}
         
     </table>

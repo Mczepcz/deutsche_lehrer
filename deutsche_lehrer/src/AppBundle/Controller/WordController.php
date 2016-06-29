@@ -61,6 +61,7 @@ class WordController extends Controller
             $date =  new \DateTime();
             $repeater->setRepeatDate($date);
             $repeater->setRepeatCode(0);
+            $repeater->setEfactor(2.5);
             $repeater->setUser($loggedUser);
             $repeater->setWord($entity);
             

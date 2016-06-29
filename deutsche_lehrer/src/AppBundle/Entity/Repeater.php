@@ -35,6 +35,12 @@ class Repeater
      */
     private $repeatCode;
     
+    /**
+     * @var float
+     * @ORM\Column(name="Efactor", type="float")
+     */
+    private $Efactor;
+    
      /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="repeaters")
      * @var User
@@ -147,5 +153,28 @@ class Repeater
     public function getWord()
     {
         return $this->word;
+    }
+
+    /**
+     * Set Efactor
+     *
+     * @param \double $efactor
+     * @return Repeater
+     */
+    public function setEfactor(\double $efactor)
+    {
+        $this->Efactor = $efactor;
+
+        return $this;
+    }
+
+    /**
+     * Get Efactor
+     *
+     * @return \double 
+     */
+    public function getEfactor()
+    {
+        return $this->Efactor;
     }
 }

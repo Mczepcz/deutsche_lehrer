@@ -17,9 +17,9 @@ class WordType extends AbstractType
         $builder
             ->add('pL')
             ->add('dE')
-            ->add('partOfSpeech')
-            ->add('gender')
-            ->add('grammNumber')
+            ->add('partOfSpeech','choice',array('choices'=>array("noun"=>1, "verb"=>2, "adjective"=>3, "pronoun"=>4, "numeral"=>5, "other"=>6),'choices_as_values' => true))
+            ->add('gender','choice', array('choices'=>array("masculine"=>1, "feminine"=>2, "neuter"=>0),'choices_as_values' => true))
+            ->add('grammNumber','choice',array('choices'=>array("singular"=>1, "plural"=>2),'choices_as_values' => true))
             ->add('deck')
         ;
     }
