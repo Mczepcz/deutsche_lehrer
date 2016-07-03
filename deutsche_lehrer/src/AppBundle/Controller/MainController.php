@@ -32,15 +32,15 @@ class MainController extends Controller
         $decks = $query->getResult();
         $decksWithNumbers = [];
         foreach($decks as $deck){
-            $numbers=$this->getRepeatsNum($deck);
+            $numbers=$this->getRepeatsNum($deck->getName());
             $decksWithNumbers[]=[$deck, $numbers['new'],$numbers["toRepeat"]];
             
         }
-        return array("name"=>$loggedUser->getUsername(), "decks"=>$decksWithNumbers);
+        return array("name"=>$loggedUser->getUsername(), "decks"=>$decksWithNumbers, "decks1"=>$decks);
         
     }
     /**
-     * @Route("/learn/{deck}", name="learnDeck")
+     * @Route("/show/{deck}", name="learnDeck")
      * @Template("AppBundle:Main:deckPage.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
@@ -54,22 +54,30 @@ class MainController extends Controller
         return array("deck"=>$currentDeck, "newNum"=>$newWordsNum, "toRepeatNum"=>$toRepeatWordNum);
     }
     /**
-     * @Route("/study/{deck}/{n}", name="study", defaults={"n" = 0})
+     * @Route("/study/{deck}", name="study")
      * @Template("AppBundle:Main:studyPage.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
-    public function learnAction($deck, $n){
+    public function learnAction($deck){
         $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deck);
         $loggedUser = $this->getUser();
-        
-        $currentRepeater = $this->getDoctrine()->getRepository('AppBundle:Repeater')->findByUser($loggedUser);
-        $wordsNum = count($currentRepeater);
-        
-        return array("words"=>$words, "deck"=>$currentDeck, "n"=>$n, "wordsNum"=>$wordsNum);
+        $newWords =  $this->getDoctrine()->getRepository('AppBundle:Repeater')->findNewWords($loggedUser, $currentDeck);
+        $toRepeatWords = $this->getDoctrine()->getRepository('AppBundle:Repeater')->findtoRepeatWords($loggedUser, $currentDeck);
+        $wordsToLearn = $newWords + $toRepeatWords;
+        $wordsNum = count($wordsToLearn);
+        if($wordsNum == 0){
+            return $this->redirect($this->generateUrl('learnDeck', array('deck' => $deck)));
+        }
+        return array("words"=> $wordsToLearn, "deck"=>$currentDeck, "wordsNum"=>$wordsNum);
     }
-    
-    public function getRepeatsNum($deck){
-        $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deck);
+    /**
+     * Return array of numbers of new words in repeater and words to repeat
+     * 
+     * @param string $deckName
+     * @return array
+     */
+    public function getRepeatsNum($deckName){
+        $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deckName);
         $loggedUser = $this->getUser();
         $newWords =  $this->getDoctrine()->getRepository('AppBundle:Repeater')->findNewWords($loggedUser, $currentDeck);
         $toRepeatWords = $this->getDoctrine()->getRepository('AppBundle:Repeater')->findtoRepeatWords($loggedUser, $currentDeck);
@@ -77,5 +85,49 @@ class MainController extends Controller
         $newWordsNum = count($newWords);
         $numbers = ["new"=>$newWordsNum, "toRepeat"=>$toRepeatWordNum];
         return $numbers;
+    }
+    /**
+     * @Route("/study/{deck}/{id}/{q}", name="repeat")
+     * @Template("AppBundle:Main:testPage.html.twig")
+     *  
+     */
+    public function calculateNewRepeatAction($id, $q, $deck){
+        $em = $this->getDoctrine()->getManager();
+        $currentRepeater = $em->getRepository('AppBundle:Repeater')->find($id);
+        if($q >= 3) {
+            $currentRepeater->setRepeatCode($currentRepeater->getRepeatCode()+1);
+        } else {
+            $currentRepeater->setRepeatCode(1);
+        }
+        
+        $newEfactor =  $currentRepeater->getEfactor()-0.8+0.28*$q-0.02*$q*$q;
+        $currentRepeater->setEfactor($newEfactor);
+        
+        function calaculateInterval($RepeatCode, $Efactor){
+            if($RepeatCode == 1){
+                $interval=1;
+            } elseif($RepeatCode == 2) {
+                $interval = 6;
+            } else {
+                $interval = calaculateInterval($RepeatCode - 1, $Efactor) * $Efactor;
+            }
+            
+            return ceil($interval);    
+        }
+        $interval = calaculateInterval($currentRepeater->getRepeatCode(),$newEfactor);
+        $interval = new \DateInterval("P".$interval."D");
+        $date = new \DateTime();
+        $date->add($interval);
+        if($q >= 3){
+           $currentRepeater->setRepeatDate($date);
+        } else {
+            $currentRepeater->setRepeatDate(new \DateTime());
+        }
+        
+        $newDate=$currentRepeater->getRepeatDate(); 
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl('study', array('deck' => $deck)));
+     
     }
 }

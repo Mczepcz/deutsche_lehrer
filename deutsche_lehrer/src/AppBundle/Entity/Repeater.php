@@ -161,7 +161,7 @@ class Repeater
      * @param \double $efactor
      * @return Repeater
      */
-    public function setEfactor(\double $efactor)
+    public function setEfactor($efactor)
     {
         $this->Efactor = $efactor;
 

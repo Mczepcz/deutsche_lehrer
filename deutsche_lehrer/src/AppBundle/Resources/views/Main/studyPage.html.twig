@@ -5,12 +5,13 @@
         <a href="{{path('learnDeck',{"deck":deck.name})}}">Back</a>
         <br/>
         <p>{{wordsNum}}</p>
-        <p>{{words[n].pL}}</p>
-        <p>{{words[n].dE}}</p>
-        {% if n < wordsNum-1 %}
-            <a href="{{path('study',{"deck":deck.name, "n":n+1})}}">Next</a>
-        {% endif %}
+        <p>{{words[0].id}}</p>
+        <p>{{words[0].word.pL}}</p>
+        <a class="showAnswer" href="#">Show Answer</a>
+        <p class="hidden" id="answer">{{words[0].word.dE}}</p>
+        <br/>
 
-        <a href="#">Bad</a> <a href="#">Hard</a> <a href="#">Good</a> <a href="#">Easy</a>
+
+        <a class="answer hidden" href="{{path('repeat',{"deck":deck.name, "id":words[0].id, "q":0})}}" data-qual="0" data-repeatId ="{{words[0].id}}" >0</a> <a class="answer hidden" href="{{path('repeat',{"deck":deck.name, "id":words[0].id, "q":1})}}" data-qual="1" data-repeatId ="{{words[0].id}}">1</a> <a class="answer hidden" href="{{path('repeat',{"deck":deck.name, "id":words[0].id, "q":2})}}" data-qual="2" data-repeatId ="{{words[0].id}}">2</a> <a class="answer hidden" href="{{path('repeat',{"deck":deck.name, "id":words[0].id, "q":3})}}" data-qual="3" data-repeatId ="{{words[0].id}}">3</a>  <a class="answer hidden" href="{{path('repeat',{"deck":deck.name, "id":words[0].id, "q":4})}}" data-qual="4" data-repeatId ="{{words[0].id}}">4</a>  <a class="answer hidden" href="{{path('repeat',{"deck":deck.name, "id":words[0].id, "q":5})}}" data-qual="5" data-repeatId ="{{words[0].id}}">5</a>
     </div>
 {% endblock %}

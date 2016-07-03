@@ -3,6 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Deutsche Lehrer{% endblock %}</title>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="{{asset('JS/app.js')}}"></script>
         <link href="{{asset('bootstrap.css')}}" rel="stylesheet" type="text/css">
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />

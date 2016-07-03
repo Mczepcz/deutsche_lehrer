@@ -18,7 +18,6 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('word_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.pL }}</td>
                 <td>{{ entity.dE }}</td>
                 <td>{{ entity.partOfSpeech }}</td>
@@ -43,6 +42,11 @@
         <li>
             <a href="{{ path('word_new') }}">
                 Create a new entry
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('learnDeck',{'deck':deck}) }}">
+                Back to deck
             </a>
         </li>
     </ul>

@@ -1,6 +1,4 @@
 <?php
 namespace AppBundle\Resources\src;
 
-class Sm2{
-    
-}
+use AppBundle\Entity\Repeater;

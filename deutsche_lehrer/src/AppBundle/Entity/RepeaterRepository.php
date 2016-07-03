@@ -20,10 +20,12 @@ class RepeaterRepository extends EntityRepository
         return $query->getResult();
     }
     public function findtoRepeatWords($user, $deck){
-        $dql='SELECT r,w FROM AppBundle:Repeater r JOIN r.word w WHERE r.user = :user AND r.repeatCode <> 0 AND w.deck = :deck ';
+        $date = new \DateTime();
+        $dql='SELECT r,w FROM AppBundle:Repeater r JOIN r.word w WHERE r.user = :user AND r.repeatDate <= :date AND w.deck = :deck ';
         $query=$this->getEntityManager()->createQuery($dql);
         $query->setParameter("user",$user);
-         $query->setParameter("deck",$deck);
+        $query->setParameter("deck",$deck);
+        $query->setParameter("date",$date);
         return $query->getResult();
     }
 }

@@ -23,18 +23,19 @@ class WordController extends Controller
     /**
      * Lists all Word entities.
      *
-     * @Route("/", name="word")
+     * @Route("/{deck}/show", name="word")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($deck)
     {
+        $currentDeck = $this->getDoctrine()->getRepository('AppBundle:Deck')->findOneByName($deck);
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppBundle:Word')->findAll();
+        $entities = $em->getRepository('AppBundle:Word')-> findAllWordsInDeck( $currentDeck);
 
         return array(
             'entities' => $entities,
+            'deck' => $deck,
         );
     }
     /**
@@ -55,7 +56,7 @@ class WordController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-            
+            $deckName=$entity->getDeck()->getName();
             $repeater = new Repeater();
             $loggedUser = $this->getUser();
             $date =  new \DateTime();
@@ -70,7 +71,7 @@ class WordController extends Controller
             
 
 
-            return $this->redirect($this->generateUrl('word_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('learnDeck', array('deck' => $deckName)));
         }
 
         return array(

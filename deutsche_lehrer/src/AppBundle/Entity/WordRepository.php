@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class WordRepository extends EntityRepository
 {
+    public function findAllWordsInDeck($deck){
+        $dql='SELECT w FROM AppBundle:Word w WHERE w.deck = :deck';
+        $query=$this->getEntityManager()->createQuery($dql);
+        $query->setParameter("deck",$deck);
+        return $query->getResult();
+    }
 }
