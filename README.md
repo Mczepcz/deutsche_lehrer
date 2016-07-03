@@ -6,7 +6,7 @@ This is not completed project! Work is still in progress. I have tread GitHub no
 
 ###About
 
-Deutshe lehrer is a simple application for learning german words. It is implementation of well-known flesh card learning technic. Mostly its designed for nouns but others parts of grammer can be learn. This app is designed for self-learning and was inspired by similar apps using SuperMemo idea. User can create his own deck of words and by daily repeats spread his vocabulary. User decided "level of knowing" of the word and programm decide when user should repeat word once again and again. I have used SM2 algorythm (more: https://www.supermemo.com/english/ol/sm2.htm).
+Deutshe lehrer is a simple application for learning german words. It is implementation of well-known flesh card learning technic. Mostly its designed for nouns but others parts of grammer can be learn. This app is designed for self-learning and was inspired by similar apps using SuperMemo idea. User can create his own deck of words and by daily repeats spread his vocabulary. User specify "level of knowing" of the word and programm decide when user should repeat word once again and again. I have used SM2 algorythm (more: https://www.supermemo.com/english/ol/sm2.htm).
 
 ##Features:
 * Add new deck 
